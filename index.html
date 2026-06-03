@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EarnShop - Global B2B Marketplace | Buy & Sell Direct</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #059669;
+            --primary-dark: #047857;
+            --primary-light: #d1fae5;
+            --secondary: #f59e0b;
+            --danger: #dc2626;
+            --dark: #111827;
+            --gray: #6b7280;
+            --light: #f9fafb;
+            --border: #e5e7eb;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        .navbar {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .navbar-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .logo-box {
+            width: 45px;
+            height: 45px;
+            background: var(--primary);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        .nav-links button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: var(--gray);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .nav-links button:hover {
+            color: var(--primary);
+        }
+        .nav-links .btn-primary {
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+        }
+        .nav-links .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .hero {
+            text-align: center;
+            padding: 5rem 2rem;
+            background: linear-gradient(135deg, var(--primary-light), white);
+            border-radius: 1rem;
+            margin-bottom: 3rem;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+        .btn-secondary {
+            background: white;
+            color: var(--dark);
+            border: 1px solid var(--border);
+        }
+        .btn-secondary:hover {
+            background: var(--light);
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+        }
+        .dashboard {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+        }
+        .sidebar {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            height: fit-content;
+            border: 1px solid var(--border);
+        }
+        .sidebar-item {
+            padding: 0.75rem;
+            cursor: pointer;
+            border-radius: 0.5rem;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        .sidebar-item:hover {
+            background: var(--light);
+            color: var(--primary);
+        }
+        .sidebar-item.active {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+        .content {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            border: 1px solid var(--border);
+        }
+        .card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .card-title {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stat-box {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--gray);
+            margin-top: 0.5rem;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .table th {
+            background: var(--light);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+        }
+        .table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .table tr:hover {
+            background: var(--light);
+        }
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .badge-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .badge-danger {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        .product-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .product-card:hover {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transform: translateY(-5px);
+        }
+        .product-image {
+            background: var(--light);
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+        .product-info {
+            padding: 1rem;
+        }
+        .product-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        .product-price {
+            font-size: 1.25rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            .navbar-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .hero h1 {
+                font-size: 1.75rem;
+            }
+            .stat-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-content">
+            <div class="logo" onclick="goToPage('home')">
+                <div class="logo-box">E</div>
+                <span>EarnShop</span>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <button onclick="goToPage('home')">Home</button>
+                <button onclick="goToPage('browse')">Browse</button>
+                <button onclick="goToPage('login')" class="btn-primary">Login</button>
+            </div>
+            <div class="nav-links" id="navUserLinks" style="display: none;">
+                <button id="userGreeting">Dashboard</button>
+                <button onclick="logout()" class="btn-primary">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="home" class="page active">
+        <div class="hero">
+            <h1>Welcome to EarnShop</h1>
+            <p>The world's largest B2B marketplace connecting manufacturers, distributors, and buyers directly. Buy at wholesale prices. Earn commissions. Scale your business.</p>
+            <button class="btn btn-primary" style="margin-right: 1rem; font-size: 1rem; padding: 1rem 2rem;" onclick="goToPage('signup')">Get Started</button>
+            <button class="btn btn-secondary" style="font-size: 1rem; padding: 1rem 2rem;" onclick="goToPage('browse')">Browse Products</button>
+        </div>
+        <div class="container">
+            <h2 style="margin-bottom: 2rem;">Why EarnShop?</h2>
+            <div class="stat-grid">
+                <div class="stat-box"><div class="stat-number">2,500+</div><div class="stat-label">Verified Suppliers</div></div>
+                <div class="stat-box"><div class="stat-number">50K+</div><div class="stat-label">Active Buyers</div></div>
+                <div class="stat-box"><div class="stat-number">$5.2M</div><div class="stat-label">Commissions Paid</div></div>
+                <div class="stat-box"><div class="stat-number">4.8/5</div><div class="stat-label">Average Rating</div></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="signup" class="page">
+        <div class="container" style="max-width: 600px;">
+            <h1 style="margin-bottom: 2rem;">Create Your Account</h1>
+            <div id="signupCategory" style="margin-bottom: 2rem;">
+                <p style="margin-bottom: 1rem; color: var(--gray);">Select your account type:</p>
+                <button class="btn btn-secondary" style="width: 100%; margin-bottom: 0.5rem; text-align: left;" onclick="selectSignupType('customer')">👤 Customer - Buy products & earn cashback</button>
+                <button class="btn btn-secondary" style="width: 100%; margin-bottom: 0.5rem; text-align: left;" onclick="selectSignupType('seller')">🏭 Seller - Sell products to buyers worldwide</button>
+            </div>
+            <form id="signupForm" onsubmit="handleSignup(event)">
+                <div class="form-group">
+                    <label>Email Address *</label>
+                    <input type="email" id="signupEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Password *</label>
+                    <input type="password" id="signupPassword" required>
+                </div>
+                <div class="form-group">
+                    <label>Full Name *</label>
+                    <input type="text" id="signupName" required>
+                </div>
+                <div id="sellerFields" style="display: none;">
+                    <div class="form-group">
+                        <label>Company Name *</label>
+                        <input type="text" id="companyName">
+                    </div>
+                    <div class="form-group">
+                        <label>Country *</label>
+                        <select id="sellerCountry"><option>China</option><option>Vietnam</option><option>India</option><option>Nigeria</option><option>Other</option></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Product Categories *</label>
+                        <input type="text" id="productCategories" placeholder="e.g., Electronics, Fashion">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem;">Create Account</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="login" class="page">
+        <div class="container" style="max-width: 600px;">
+            <h1 style="margin-bottom: 2rem;">Login to EarnShop</h1>
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Email Address *</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Password *</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem;">Login</button>
+                <p style="margin-top: 1rem; color: var(--gray);">Don't have an account? <button type="button" style="background: none; border: none; color: var(--primary); cursor: pointer; text-decoration: underline; font-weight: 600;" onclick="goToPage('signup')">Sign up here</button></p>
+            </form>
+        </div>
+    </div>
+
+    <div id="browse" class="page">
+        <div class="container">
+            <h1 style="margin-bottom: 2rem;">Browse Products</h1>
+            <div class="product-grid">
+                <div class="product-card" onclick="goToPage('productDetail')">
+                    <div class="product-image">🎧</div>
+                    <div class="product-info"><div class="product-name">Wireless Headphones Pro</div><div class="product-price">$45</div><div style="color: var(--gray); font-size: 0.875rem;">from TechFactory Asia</div></div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">👕</div>
+                    <div class="product-info"><div class="product-name">Premium Cotton T-Shirt</div><div class="product-price">$8</div><div style="color: var(--gray); font-size: 0.875rem;">from Fashion Industries</div></div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">🔌</div>
+                    <div class="product-info"><div class="product-name">USB-C Fast Charger</div><div class="product-price">$12</div><div style="color: var(--gray); font-size: 0.875rem;">from Electronics Factory</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="buyerDashboard" class="page">
+        <div class="container">
+            <h1 style="margin-bottom: 2rem;">Your Dashboard</h1>
+            <div class="stat-grid">
+                <div class="stat-box"><div class="stat-number">$1,250</div><div class="stat-label">Total Earnings</div></div>
+                <div class="stat-box"><div class="stat-number">$340</div><div class="stat-label">Cashback</div></div>
+                <div class="stat-box"><div class="stat-number">$560</div><div class="stat-label">Referral Commissions</div></div>
+                <div class="stat-box"><div class="stat-number">$350</div><div class="stat-label">Resale Profits</div></div>
+            </div>
+            <div class="card">
+                <h3 class="card-title">Recent Orders</h3>
+                <table class="table">
+                    <thead><tr><th>Order ID</th><th>Product</th><th>Amount</th><th>Status</th><th>Earned</th></tr></thead>
+                    <tbody><tr><td>#ORD001</td><td>Wireless Headphones</td><td>$45</td><td><span class="badge badge-success">Delivered</span></td><td>$5.40</td></tr><tr><td>#ORD002</td><td>USB-C Charger</td><td>$12</td><td><span class="badge badge-success">Delivered</span></td><td>$1.68</td></tr></tbody>
+                </table>
+            </div>
+            <div class="card">
+                <h3 class="card-title">Withdraw Earnings</h3>
+                <div class="form-group"><label>Available Balance: <strong>$1,250</strong></label><input type="number" placeholder="Amount to withdraw (Min $10)" min="10" max="1250"></div>
+                <div class="form-group"><label>Withdrawal Method</label><select><option>Bank Transfer</option><option>PayPal</option><option>Mobile Money (MTN, Airtel)</option><option>Crypto (Bitcoin, USDT)</option></select></div>
+                <button class="btn btn-primary">Request Withdrawal</button>
+                <p style="font-size: 0.875rem; color: var(--gray); margin-top: 1rem;">⏱️ Processed in 2-3 business days. Fee: 2-3%</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="sellerDashboard" class="page">
+        <div class="container">
+            <h1 style="margin-bottom: 2rem;">Seller Dashboard</h1>
+            <div class="stat-grid">
+                <div class="stat-box"><div class="stat-number">$8,500</div><div class="stat-label">Total Sales</div></div>
+                <div class="stat-box"><div class="stat-number">$1,360</div><div class="stat-label">Your Earnings (84%)</div></div>
+                <div class="stat-box"><div class="stat-number">125</div><div class="stat-label">Active Products</div></div>
+                <div class="stat-box"><div class="stat-number">4.9/5</div><div class="stat-label">Seller Rating</div></div>
+            </div>
+            <div class="dashboard">
+                <div class="sidebar">
+                    <div class="sidebar-item active" onclick="switchTab('sales')">📊 Sales</div>
+                    <div class="sidebar-item" onclick="switchTab('products')">📦 Products</div>
+                    <div class="sidebar-item" onclick="switchTab('orders')">📋 Orders</div>
+                    <div class="sidebar-item" onclick="switchTab('messages')">💬 Messages</div>
+                    <div class="sidebar-item" onclick="switchTab('withdraw')">💰 Withdrawals</div>
+                    <div class="sidebar-item" onclick="switchTab('settings')">⚙️ Settings</div>
+                </div>
+                <div class="content">
+                    <div id="salesTab" class="tab-content">
+                        <h3 class="card-title">Sales Analytics</h3>
+                        <table class="table">
+                            <thead><tr><th>Order ID</th><th>Buyer</th><th>Product</th><th>Amount</th><th>Your Earnings</th><th>Status</th></tr></thead>
+                            <tbody><tr><td>#ORD001</td><td>John Doe</td><td>Wireless Headphones</td><td>$45</td><td>$37.80</td><td><span class="badge badge-success">Shipped</span></td></tr></tbody>
+                        </table>
+                    </div>
+                    <div id="productsTab" class="tab-content" style="display: none;">
+                        <h3 class="card-title">Manage Products</h3>
+                        <button class="btn btn-primary" style="margin-bottom: 1rem;">+ Add New Product</button>
+                        <table class="table">
+                            <thead><tr><th>Product</th><th>SKU</th><th>Price</th><th>Stock</th><th>Sales</th><th>Action</th></tr></thead>
+                            <tbody><tr><td>Wireless Headphones Pro</td><td>WH-2024-001</td><td>$45</td><td>250</td><td>1,250</td><td><button class="btn btn-secondary">Edit</button></td></tr></tbody>
+                        </table>
+                    </div>
+                    <div id="ordersTab" class="tab-content" style="display: none;">
+                        <h3 class="card-title">Recent Orders</h3>
+                        <table class="table">
+                            <thead><tr><th>Order ID</th><th>Date</th><th>Buyer</th><th>Total</th><th>Status</th></tr></thead>
+                            <tbody><tr><td>#ORD001</td><td>2024-01-15</td><td>John Doe</td><td>$45</td><td><span class="badge badge-success">Delivered</span></td></tr></tbody>
+                        </table>
+                    </div>
+                    <div id="messagesTab" class="tab-content" style="display: none;">
+                        <h3 class="card-title">Messages from Buyers</h3>
+                        <div class="card"><strong>John Doe</strong> - "Do you offer bulk discounts?"<button class="btn btn-primary" style="float: right;">Reply</button></div>
+                    </div>
+                    <div id="withdrawTab" class="tab-content" style="display: none;">
+                        <h3 class="card-title">Withdrawal History</h3>
+                        <p><strong>Available to Withdraw: $1,360</strong></p>
+                        <div class="form-group" style="margin: 1rem 0;"><input type="number" placeholder="Amount" min="10" max="1360"></div>
+                        <div class="form-group"><select><option>Bank Account</option><option>PayPal</option><option>Crypto</option></select></div>
+                        <button class="btn btn-primary">Request Withdrawal</button>
+                        <p style="font-size: 0.875rem; color: var(--gray); margin-top: 1rem;">⏱️ All withdrawals are processed within 2-3 business days. Your transfer details remain private and visible only to you.</p>
+                        <table class="table" style="margin-top: 2rem;">
+                            <thead><tr><th>Date</th><th>Amount</th><th>Method</th><th>Status</th></tr></thead>
+                            <tbody><tr><td>2024-01-10</td><td>$500</td><td>Bank Transfer</td><td><span class="badge badge-success">Completed</span></td></tr></tbody>
+                        </table>
+                    </div>
+                    <div id="settingsTab" class="tab-content" style="display: none;">
+                        <h3 class="card-title">Account Settings</h3>
+                        <div class="form-group"><label>Company Name</label><input type="text" value="TechFactory Asia" disabled></div>
+                        <div class="form-group"><label>Verification Status</label><p>✅ Verified Seller</p></div>
+                        <button class="btn btn-secondary">Edit Profile</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="adminDashboard" class="page">
+        <div class="container">
+            <h1 style="margin-bottom: 2rem;">Admin Dashboard (Platform Owner Only)</h1>
+            <div class="stat-grid">
+                <div class="stat-box"><div class="stat-number">$50,240</div><div class="stat-label">Platform Revenue</div></div>
+                <div class="stat-box"><div class="stat-number">2,540</div><div class="stat-label">Total Sellers</div></div>
+                <div class="stat-box"><div class="stat-number">52,100</div><div class="stat-label">Total Buyers</div></div>
+                <div class="stat-box"><div class="stat-number">125,430</div><div class="stat-label">Total Orders</div></div>
+            </div>
+            <div class="dashboard">
+                <div class="sidebar">
+                    <div class="sidebar-item active" onclick="switchTab('adminOverview')">📊 Overview</div>
+                    <div class="sidebar-item" onclick="switchTab('adminSellers')">🏭 Sellers</div>
+                    <div class="sidebar-item" onclick="switchTab('adminTransactions')">💳 Transactions</div>
+                    <div class="sidebar-item" onclick="switchTab('adminUsers')">👥 Users</div>
+                    <div class="sidebar-item" onclick="switchTab('adminReports')">📈 Reports</div>
+                </div>
+                <div class="content">
+                    <div id="adminOverviewTab" class="tab-content">
+                        <h3 class="card-title">Platform Overview</h3>
+                        <table class="table">
+                            <thead><tr><th>Metric</th><th>Value</th><th>Growth</th></tr></thead>
+                            <tbody><tr><td>Monthly Transactions</td><td>$125,430</td><td>+12.5%</td></tr><tr><td>Platform Commission (16%)</td><td>$20,069</td><td>+12.5%</td></tr><tr><td>New Sellers This Month</td><td>245</td><td>+8.2%</td></tr></tbody>
+                        </table>
+                    </div>
+                    <div id="adminSellersTab" class="tab-content" style="display: none;">
+                        <h3 class="card-title">Pending Seller Verifications</h3>
+                        <table class="table">
+                            <thead><tr><th>Company</th><th>Category</th><th>Date Applied</th><th>Action</th></tr></thead>
+                            <tbody><tr><td>NewFactory Ltd</td><td>Electronics</td><td>2024-01-15</td><td><button class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">Approve</button><button class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">Reject</button></td></tr></tbody>
+                        </table>
+                    </div>
+                    <div id="adminTransactionsTab" class="tab-content" style="display: none;">
+                        <h3 class="card-title">All Transactions (ADMIN ONLY - PRIVATE)</h3>
+                        <p style="color: var(--gray); margin-bottom: 1rem;">🔒 This view is private and only visible to platform administrators.</p>
+                        <table class="table">
+                            <thead><tr><th>ID</th><th>Type</th><th>Amount</th><th>Recipient</th><th>Date</th></tr></thead>
+                            <tbody><tr><td>#TRX001</td><td>Seller Payout</td><td>$1,500</td><td>TechFactory Asia</td><td>2024-01-15</td></tr></tbody>
+                        </table>
+                    </div>
+                    <div id="adminUsersTab" class="tab-content" style="display: none;">
+                        <h3 class="card-title">User Management</h3>
+                        <table class="table">
+                            <thead><tr><th>Name</th><th>Email</th><th>Type</th><th>Status</th></tr></thead>
+                            <tbody><tr><td>John Doe</td><td>john@example.com</td><td>Buyer</td><td><span class="badge badge-success">Active</span></td></tr></tbody>
+                        </table>
+                    </div>
+                    <div id="adminReportsTab" class="tab-content" style="display: none;">
+                        <h3 class="card-title">Platform Analytics</h3>
+                        <div class="card"><p><strong>Total Revenue (16% commission):</strong> $50,240/month</p><p><strong>Your Net Profit:</strong> $48,240/month (after operational costs)</p><p style="font-size: 0.875rem; color: var(--gray); margin-top: 1rem;">📊 Detailed financial reports are private and encrypted.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="productDetail" class="page">
+        <div class="container" style="max-width: 1000px;">
+            <button class="btn btn-secondary" onclick="goToPage('browse')" style="margin-bottom: 1rem;">← Back to Products</button>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div><div style="background: var(--light); padding: 3rem; border-radius: 0.75rem; text-align: center; font-size: 5rem;">🎧</div></div>
+                <div>
+                    <h1>Wireless Headphones Pro</h1>
+                    <div style="font-size: 1.5rem; color: var(--primary); font-weight: 700; margin: 1rem 0;">$45</div>
+                    <p style="color: var(--gray); text-decoration: line-through; margin-bottom: 1rem;">Retail: $129</p>
+                    <p style="color: var(--primary); font-weight: 600; margin-bottom: 1rem;">💰 Earn $5.40 cashback on this purchase</p>
+                    <div class="form-group"><label>Quantity</label><input type="number" value="1" min="1"></div>
+                    <button class="btn btn-primary" style="width: 100%; padding: 1rem;">Add to Cart</button>
+                    <div class="card" style="margin-top: 2rem;">
+                        <h3 class="card-title">Bulk Pricing</h3>
+                        <table class="table"><tr><td>1 unit</td><td>$45</td></tr><tr><td>10+ units</td><td>$40</td></tr><tr><td>50+ units</td><td>$35</td></tr></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = JSON.parse(localStorage.getItem('earnshop_user')) || null;
+        let signupType = 'customer';
+        function goToPage(pageName) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageName).classList.add('active');
+            updateNav();
+        }
+        function selectSignupType(type) {
+            signupType = type;
+            if (type === 'customer') {
+                document.getElementById('sellerFields').style.display = 'none';
+            } else {
+                document.getElementById('sellerFields').style.display = 'block';
+            }
+        }
+        function handleSignup(e) {
+            e.preventDefault();
+            const user = {
+                email: document.getElementById('signupEmail').value,
+                password: document.getElementById('signupPassword').value,
+                name: document.getElementById('signupName').value,
+                type: signupType,
+                company: signupType === 'seller' ? document.getElementById('companyName').value : null,
+                joinDate: new Date().toLocaleDateString(),
+                earnings: 0,
+                id: Date.now()
+            };
+            currentUser = user;
+            localStorage.setItem('earnshop_user', JSON.stringify(user));
+            alert('Account created! Welcome to EarnShop!');
+            updateNav();
+            goToPage(signupType === 'seller' ? 'sellerDashboard' : 'buyerDashboard');
+        }
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            if (email === 'admin@earnshop.com' && password === 'admin') {
+                currentUser = { email, name: 'Admin', type: 'admin', id: 1 };
+            } else {
+                currentUser = { email, name: 'User', type: 'customer', id: Date.now() };
+            }
+            localStorage.setItem('earnshop_user', JSON.stringify(currentUser));
+            alert('Logged in successfully!');
+            updateNav();
+            goToPage(currentUser.type === 'admin' ? 'adminDashboard' : currentUser.type === 'seller' ? 'sellerDashboard' : 'buyerDashboard');
+        }
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('earnshop_user');
+            updateNav();
+            goToPage('home');
+        }
+        function updateNav() {
+            const navLinks = document.getElementById('navLinks');
+            const navUserLinks = document.getElementById('navUserLinks');
+            const userGreeting = document.getElementById('userGreeting');
+            if (currentUser) {
+                navLinks.style.display = 'none';
+                navUserLinks.style.display = 'flex';
+                userGreeting.textContent = `Welcome, ${currentUser.name}`;
+                userGreeting.onclick = () => goToPage(currentUser.type === 'admin' ? 'adminDashboard' : currentUser.type === 'seller' ? 'sellerDashboard' : 'buyerDashboard');
+            } else {
+                navLinks.style.display = 'flex';
+                navUserLinks.style.display = 'none';
+            }
+        }
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+            document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
+            document.getElementById(tabName + 'Tab').style.display = 'block';
+            event.target.classList.add('active');
+        }
+        updateNav();
+    </script>
+</body>
+  </html>
